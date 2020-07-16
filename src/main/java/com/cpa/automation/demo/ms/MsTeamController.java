@@ -23,6 +23,9 @@ public class MsTeamController {
 
 	@Autowired
 	HttpClientHelper httpClientHelper;
+	
+	@Autowired
+	RemedyIncidentHelper remedyIncidentHelper;
 
 	public String getChatDetailsPage(Date lastUpdated) throws JSONException, IOException {
 		
@@ -195,7 +198,7 @@ public class MsTeamController {
 
 		JSONObject msgresponseObject = httpClientHelper.processResponse(msResponseCode, msgResponse);
 
-		return RemedyIncidentHelper.updateIncident(JsonUtil.getMessages(msgresponseObject.toString()));
+		return remedyIncidentHelper.updateIncident(JsonUtil.getMessages(msgresponseObject.toString()));
 
 	}
 }

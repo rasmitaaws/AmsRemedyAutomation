@@ -2,6 +2,8 @@
 package com.cpa.automation.demo.job;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -25,6 +27,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 public class TeamRemedyAutomationJob {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private JobBuilderFactory jobBuilderFactory;
 	private StepBuilderFactory stepBuilderFactory;
 	
@@ -84,5 +87,7 @@ public class TeamRemedyAutomationJob {
 	public Step step1TeamRemedyAutomationJob() throws Exception {
 		return this.stepBuilderFactory.get("step1TeamRemedyAutomationJob").tasklet(remedyMsAutomationTasklet).build();
 	}
+
+	
 
 }

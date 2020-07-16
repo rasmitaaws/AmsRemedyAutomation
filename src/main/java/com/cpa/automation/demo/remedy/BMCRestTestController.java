@@ -16,10 +16,16 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BMCRestTestController {
 
-	public static String login(String baseURL, String userName, String password) {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
+	public  String login(String baseURL, String userName, String password) {
 		String output = "";
 
 		if (!baseURL.endsWith("/")) {
@@ -48,8 +54,9 @@ public class BMCRestTestController {
 			output = "AR-JWT " + getResponseText(in);
 
 		} catch (MalformedURLException ex) {
-
+			LOGGER.debug(""+ex.getMessage());
 		} catch (IOException ex) {
+			LOGGER.debug(""+ex.getMessage());
 
 		} finally {
 			if (urlConnection != null) {
@@ -59,7 +66,7 @@ public class BMCRestTestController {
 		return output;
 	}
 
-	public static int logout(String baseURL, String token) {
+	public  int logout(String baseURL, String token) {
 		HttpURLConnection urlConnection = null;
 		int statusCode = 0;
 
@@ -76,9 +83,10 @@ public class BMCRestTestController {
 			statusCode = urlConnection.getResponseCode();
 
 		} catch (MalformedURLException ex) {
+			LOGGER.debug(""+ex.getMessage());
 
 		} catch (IOException ex) {
-
+			LOGGER.debug(""+ex.getMessage());
 		} finally {
 			if (urlConnection != null) {
 				urlConnection.disconnect();
@@ -87,7 +95,7 @@ public class BMCRestTestController {
 		return statusCode;
 	}
 
-	public static void getEntry(String baseURL, String token, String entryID) {
+	public  void getEntry(String baseURL, String token, String entryID) {
 		HttpURLConnection urlConnection = null;
 
 		if (!baseURL.endsWith("/")) {
@@ -105,10 +113,11 @@ public class BMCRestTestController {
 			System.out.println("Response Message: " + urlConnection.getResponseMessage() + " Response Code : "
 					+ urlConnection.getResponseCode() + "  ");
 		} catch (MalformedURLException ex) {
-			System.out.println(ex.getMessage() + ex);
+		
+			LOGGER.debug(""+ex.getMessage());
 
 		} catch (IOException ex) {
-			System.out.println(ex.getMessage() + ex);
+			LOGGER.debug(""+ex.getMessage());
 
 			if (urlConnection != null) {
 				urlConnection.disconnect();
@@ -120,7 +129,7 @@ public class BMCRestTestController {
 		return new Scanner(inStream).useDelimiter("\\A").next();
 	}
 
-	public static void updateIncident(String token, String msg) {
+	public  void updateIncident(String token, String msg) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpPut httpPut = new HttpPut(
 				"http://VTRVITSTP-03:8008/api/arsys/v1/entry/HPD:IncidentInterface/INC000000002106%7CINC000000002106");
@@ -147,15 +156,27 @@ public class BMCRestTestController {
 			System.out.println("update");
 			System.out.println("update status:" + status);
 		} catch (ClientProtocolException e) {
-			System.out.println(e.getMessage() + e);
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage() + e);
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 		}
-
+		
+	finally {
+	if(httpClient!=null)
+	{
+		try {
+			httpClient.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			LOGGER.debug(""+e.getMessage());
+		}
+		}
 	}
+	}
+
+	
 
 
 }

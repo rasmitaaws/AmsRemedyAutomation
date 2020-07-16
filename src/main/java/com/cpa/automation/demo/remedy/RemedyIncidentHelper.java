@@ -1,18 +1,38 @@
 package com.cpa.automation.demo.remedy;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.cpa.automation.demo.util.OAuthConstants;
+
+@Component
 public class RemedyIncidentHelper {
 	
+	public RemedyIncidentHelper() {
+		
+	}
 	
-	public static  String updateIncident(String msg)
+	@Autowired
+	BMCRestTestController bMCRestTestController;
+	
+	/** process Folder **/
+	@Value("${remedy.username}")
+	private String userName;
+	
+	
+	/** process Folder **/
+	@Value("${remedy.password}")
+	private String  password;
+	
+	
+	
+	public   String updateIncident(String msg)
 	{
 		String baseURL ="http://vtrvitstp-03:8008"; //sc.next();
-		//	System.out.println("Enter user name: ");
-			String userName = "rasmita.jena";
-		//	System.out.println("Enter password: ");
-			String password = "remedy";
+			
 		
-		
-			String token= BMCRestTestController.login(baseURL, userName, password);
+			String token= bMCRestTestController.login(baseURL, userName, password);
 			
 			System.out.println("*************** Getting JWT Login *****************");
 			System.out.println("Login result :"+token);
@@ -20,7 +40,7 @@ public class RemedyIncidentHelper {
 			
 			
 			System.out.println("*************** Updating  Incident INC000000003004 *****************");
-		    BMCRestTestController.updateIncident(token.trim(),msg);
+			bMCRestTestController.updateIncident(token.trim(),msg);
 		    
 		    
 		    return "update";

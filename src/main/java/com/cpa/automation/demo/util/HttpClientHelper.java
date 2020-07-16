@@ -40,6 +40,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -50,6 +52,9 @@ import org.xml.sax.InputSource;
 
 @Component
 public class HttpClientHelper {
+	
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
 	@Value("${client-id}")
 	private String clientId;
@@ -157,13 +162,17 @@ public class HttpClientHelper {
 			}
 
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
+		}
+		finally
+		{
+			if(client!=null)
+			client.close();
 		}
 
 		return location;
@@ -248,12 +257,16 @@ public class HttpClientHelper {
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
+		}
+		finally
+		{
+			if(client!=null)
+			client.close();
 		}
 
 		return accessToken;
@@ -315,13 +328,16 @@ public class HttpClientHelper {
 			 */
 
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
+		}
+		finally
+		{
+			if(client!=null)
+			client.close();
 		}
 
 		return accessToken;
@@ -343,9 +359,8 @@ public class HttpClientHelper {
 			return handleJsonResponse(response);
 		} else if (contentType.contains(OAuthConstants.URL_ENCODED_CONTENT)) {
 			return handleURLEncodedResponse(response);
-		} else if (contentType.contains(OAuthConstants.XML_CONTENT)) {
-			return handleXMLResponse(response);
-		} else {
+		}
+		else {
 			// Unsupported Content type
 			throw new RuntimeException("Cannot handle " + contentType
 					+ " content type. Supported content types include JSON, XML and URLEncoded");
@@ -399,34 +414,14 @@ public class HttpClientHelper {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException("Could not parse URLEncoded Response");
 		}
 
 		return oauthResponse;
 	}
 
-	public  Map handleXMLResponse(HttpResponse response) {
-		Map<String, String> oauthResponse = new HashMap<String, String>();
-		try {
-
-			String xmlString = EntityUtils.toString(response.getEntity());
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = factory.newDocumentBuilder();
-			InputSource inStream = new InputSource();
-			inStream.setCharacterStream(new StringReader(xmlString));
-			Document doc = db.parse(inStream);
-
-			System.out.println("********** Response Receieved **********");
-			parseXMLDoc(null, doc, oauthResponse);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Exception occurred while parsing XML response");
-		}
-		return oauthResponse;
-	}
-
+	
 	public  void parseXMLDoc(Element element, Document doc, Map<String, String> oauthResponse) {
 		NodeList child = null;
 		if (element == null) {
@@ -495,13 +490,16 @@ public class HttpClientHelper {
 			map = handleResponse(response);
 
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug(""+e.getMessage());
 			throw new RuntimeException(e.getMessage());
+		}
+		finally
+		{
+			if(client!=null)
+			client.close();
 		}
 
 		return map;

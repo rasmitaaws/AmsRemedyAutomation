@@ -22,7 +22,7 @@ public class AmsRemedyAutomationApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 
-		SpringApplication.run(AmsRemedyAutomationApplication.class, args);
+		SpringApplication.run(AmsRemedyAutomationApplication.class);
 
 	}
 
@@ -33,5 +33,6 @@ public class AmsRemedyAutomationApplication implements CommandLineRunner {
 		
 			
 	}
+
 
 }

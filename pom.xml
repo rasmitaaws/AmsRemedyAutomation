@@ -164,6 +164,22 @@
   <groupId>org.sonarsource.scanner.maven</groupId>
   <artifactId>sonar-maven-plugin</artifactId>
    <version>3.6.0.1398</version>
+   <configuration>
+                  
+                    <excludes>
+                        <exclude>**/*Application.java</exclude>
+                        <exclude>**/*Job.java</exclude>
+                        <exclude>**/*JobRunner.java</exclude>
+                        <exclude>**/*Controller.java</exclude>
+                      
+                        <exclude>**/*Helper.java</exclude>
+                        <exclude>**/*AutomationTasklet.java</exclude>
+                         <exclude>**/*Util.java</exclude>
+                       
+                      
+                         <exclude>**/*Tests.java</exclude>
+                    </excludes>
+                </configuration>
 </plugin>
 		</plugins>
 	</build>

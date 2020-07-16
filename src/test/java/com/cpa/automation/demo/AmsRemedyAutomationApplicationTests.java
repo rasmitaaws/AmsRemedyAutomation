@@ -8,6 +8,7 @@ class AmsRemedyAutomationApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }

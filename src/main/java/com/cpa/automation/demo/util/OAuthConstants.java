@@ -40,5 +40,8 @@ public class OAuthConstants {
 	public static final int HTTP_UNAUTHORIZED = 401;
 	public static final int HTTP_SEND_REDIRECT = 302;
 	
+	public static final String SECRET_USERNAME="remedy.username";
+	public static final String SECRET_PASSWORD="remedy.password";
+	
 
 }
